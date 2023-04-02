@@ -84,6 +84,14 @@ def process_alerts
     end
   end
 
+  remote_ids = alerts.map{ |alert| alert['id'] }
+  Alert.where(state: 'active').exclude(id: remote_ids).each do |alert|
+    alert.update(finished_at: Time.now, updated_at: Time.now)
+    alert.terminate
+    alert.save
+    terminated_alerts << alert
+  end
+
   [started_alerts, terminated_alerts]
 end
 
