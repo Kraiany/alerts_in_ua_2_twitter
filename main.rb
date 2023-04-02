@@ -39,6 +39,8 @@ class Alert < Sequel::Model
   end
 end
 
+Alert.unrestrict_primary_key
+
 def fetch_alerts
   uri = URI("https://api.alerts.in.ua/v1/alerts/active.json")
   req = Net::HTTP::Get.new(uri)
@@ -65,24 +67,36 @@ end
 def process_alerts
   alerts = fetch_alerts
   return if alerts.nil?
+  started_alerts = []
+  terminated_alerts = []
 
   alerts.each do |remote_alert|
     alert_id = remote_alert['id'].to_i
     alert = Alert[alert_id]
     if alert.nil?
       alert = Alert.create(remote_alert)
-      alert.activate!
-      send_twitter_notification(alert)
+      started_alerts << alert
     elsif alert.state == 'active' && !remote_alert['finished_at'].nil?
       alert.update(finished_at: remote_alert['finished_at'], updated_at: remote_alert['updated_at'])
-      alert.terminate!
-      send_twitter_notification(alert)
+      alert.terminate
+      alert.save
+      terminated_alerts << alert
     end
   end
+
+  [started_alerts, terminated_alerts]
 end
 
 while true
-  process_alerts
+  started_alerts, terminated_alerts = process_alerts
+  puts "Started:"
+  started_alerts.each do |a|
+    send_twitter_notification(a)
+  end
+  puts "finished:"
+  terminated_alerts.each do |a|
+    send_twitter_notification(a)
+  end
   sleep(60)
 end
 
