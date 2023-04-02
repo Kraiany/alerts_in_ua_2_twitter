@@ -97,13 +97,18 @@ end
 
 while true
   started_alerts, terminated_alerts = process_alerts
-  puts "Started:"
-  started_alerts.each do |a|
-    send_twitter_notification(a)
+
+  if started_alerts.any?
+    locations_joined = started_alerts.map(&:location_title).join("、")
+    message = "#{locations_joined}で空襲警報が発令せれました。"
+    send_twitter_notification(message)
   end
-  puts "finished:"
-  terminated_alerts.each do |a|
-    send_twitter_notification(a)
+
+
+  if terminated_alerts.any?
+    locations_joined = terminated_alerts.map(&:location_title).join("、")
+    message = "#{locations_joined}で空襲警報が解除されました。"
+    send_twitter_notification(message)
   end
   sleep(60)
 end
