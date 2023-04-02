@@ -10,6 +10,7 @@ TWITTER_CONSUMER_KEY = 'your_consumer_key'
 TWITTER_CONSUMER_SECRET = 'your_consumer_secret'
 TWITTER_ACCESS_TOKEN = 'your_access_token'
 TWITTER_ACCESS_SECRET = 'your_access_secret'
+SNITCH_URL = ENV['SNITCH_URL']
 
 DB = Sequel.sqlite('alerts.db')
 DB.create_table?(:alerts) do
@@ -100,6 +101,12 @@ def concat_locations(alerts)
   alerts.map(&:location_title).map{ |t| TRANSLATIONS.dig(t.to_sym, :ja) || t }.join(TRANSLATIONS.dig(:comma, :ja))
 end
 
+def ping_deadmans_snitch
+  return unless SNITCH_URL
+  uri = URI(SNITCH_URL)
+  Net::HTTP.get_response(uri)
+end
+
 while true
   started_alerts, terminated_alerts = process_alerts
 
@@ -114,6 +121,7 @@ while true
     send_twitter_notification(message)
   end
 
+  ping_deadmans_snitch
   sleep(60)
 end
 
