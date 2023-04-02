@@ -3,6 +3,7 @@ require 'json'
 require 'twitter'
 require 'sequel'
 require 'state_machines'
+require './translations.rb'
 
 API_TOKEN = ENV['ALERTS_IN_UA_TOKEN']
 TWITTER_CONSUMER_KEY = 'your_consumer_key'
@@ -95,21 +96,24 @@ def process_alerts
   [started_alerts, terminated_alerts]
 end
 
+def concat_locations(alerts)
+  alerts.map(&:location_title).map{ |t| TRANSLATIONS.dig(t.to_sym, :ja) || t }.join(TRANSLATIONS.dig(:comma, :ja))
+end
+
 while true
   started_alerts, terminated_alerts = process_alerts
 
   if started_alerts.any?
-    locations_joined = started_alerts.map(&:location_title).join("、")
-    message = "#{locations_joined}で空襲警報が発令せれました。"
+    message = "#{concat_locations(started_alerts)}で空襲警報が発令せれました。"
     send_twitter_notification(message)
   end
 
 
   if terminated_alerts.any?
-    locations_joined = terminated_alerts.map(&:location_title).join("、")
-    message = "#{locations_joined}で空襲警報が解除されました。"
+    message = "#{concat_locations(terminated_alerts)}で空襲警報が解除されました。"
     send_twitter_notification(message)
   end
+
   sleep(60)
 end
 
