@@ -2,6 +2,7 @@ require './alert_in_ua_2_twitter/version'
 require './alert_in_ua_2_twitter/db'
 require './alert_in_ua_2_twitter/alert_retriever'
 require './alert_in_ua_2_twitter/translation'
+require './alert_in_ua_2_twitter/tweeter'
 
 API_TOKEN = ENV['ALERTS_IN_UA_TOKEN']
 TWITTER_CONSUMER_KEY = 'your_consumer_key'
