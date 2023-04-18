@@ -29,7 +29,7 @@ private
     m = []
 
     alerts.each do |a|
-      m << MiniI18n.t(a.location_title)
+      m << (MiniI18n.t(a.location_title) || a.location_title)
     end
 
     message = [
