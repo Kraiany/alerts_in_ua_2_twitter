@@ -3,67 +3,62 @@ require 'json'
 require 'typhoeus'
 require 'oauth/request_proxy/typhoeus_request'
 
-# The code below sets the consumer key and secret from your environment variables
-# To set environment variables on Mac OS X, run the export command below from the terminal:
-# export CONSUMER_KEY='YOUR-KEY', CONSUMER_SECRET='YOUR-SECRET'
-consumer_key = ENV["CONSUMER_KEY"]
-consumer_secret = ENV["CONSUMER_SECRET"]
+class AlertInUa2Twitter
+  class Tweeter
+    CREATE_TWEET_URL = "https://api.twitter.com/2/tweets"
 
+    def initialize(key, secret)
+      consumer_key = ENV["CONSUMER_KEY"]
+      consumer_secret = ENV["CONSUMER_SECRET"]
+    end
 
-create_tweet_url = "https://api.twitter.com/2/tweets"
+    def payload(message)
+      {"text": message}
+    end
 
-# Be sure to add replace the text of the with the text you wish to Tweet.
-# You can also add parameters to post polls, quote Tweets, Tweet with reply settings, and Tweet to Super Followers in addition to other features.
-@json_payload = {"text": "Hello world!"}
+    def consumer
+      @consumer ||= OAuth::Consumer.new(consumer_key, consumer_secret,
+                                          :site => 'https://api.twitter.com',
+                                          :authorize_path => '/oauth/authenticate',
+                                          :debug_output => false)
+    end
 
-consumer = OAuth::Consumer.new(consumer_key, consumer_secret,
-	                                :site => 'https://api.twitter.com',
-	                                :authorize_path => '/oauth/authenticate',
-	                                :debug_output => false)
+    def get_request_token(consumer)
+      consumer.get_request_token()
+    end
 
-def get_request_token(consumer)
+    def get_user_authorization(request_token)
+      puts "Follow this URL to have a user authorize your app: #{request_token.authorize_url()}"
+      puts "Enter PIN: "
+      gets.strip
+    end
 
-	request_token = consumer.get_request_token()
+    def obtain_access_token(consumer, request_token, pin)
+      token = request_token.token
+      token_secret = request_token.secret
+      hash = { :oauth_token => token, :oauth_token_secret => token_secret }
+      request_token  = OAuth::RequestToken.from_hash(consumer, hash)
 
-  return request_token
-end
+      request_token.get_access_token({:oauth_verifier => pin})
+    end
 
-def get_user_authorization(request_token)
-	puts "Follow this URL to have a user authorize your app: #{request_token.authorize_url()}"
-	puts "Enter PIN: "
-	pin = gets.strip
-
-  return pin
-end
-
-def obtain_access_token(consumer, request_token, pin)
-	token = request_token.token
-	token_secret = request_token.secret
-	hash = { :oauth_token => token, :oauth_token_secret => token_secret }
-	request_token  = OAuth::RequestToken.from_hash(consumer, hash)
-
-	# Get access token
-	access_token = request_token.get_access_token({:oauth_verifier => pin})
-
-	return access_token
-end
-
-
-def create_tweet(url, oauth_params)
-	options = {
-	    :method => :post,
-	    headers: {
-	     	"User-Agent": "v2CreateTweetRuby",
-        "content-type": "application/json"
-	    },
-	    body: JSON.dump(@json_payload)
-	}
-	request = Typhoeus::Request.new(url, options)
-	oauth_helper = OAuth::Client::Helper.new(request, oauth_params.merge(:request_uri => url))
-	request.options[:headers].merge!({"Authorization" => oauth_helper.header}) # Signs the request
-	response = request.run
-
-	return response
+    def create_tweet(access_token, message)
+      options = {
+          :method => :post,
+          headers: {
+            "User-Agent": "AlertInUa2Twitter #{VERSION}",
+            "content-type": "application/json"
+          },
+          body: JSON.dump(payload(message))
+      }
+      request = Typhoeus::Request.new(CREATE_TWEET_URL, options)
+      oauth_helper = OAuth::Client::Helper.new(request, {
+        consumer: consumer, token: access_token, request_uri: CREATE_TWEET_URL
+      })
+      request.options[:headers].merge!({"Authorization" => oauth_helper.header}) # Signs the request
+      request.run
+    end
+  end
 end
 
 
