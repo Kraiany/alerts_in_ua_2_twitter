@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require './alert_in_ua_2_twitter'
+
+tweeter = AlertInUa2Twitter::Tweeter.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, nil)
+puts tweeter.get_access_token

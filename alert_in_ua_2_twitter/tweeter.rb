@@ -6,10 +6,26 @@ require 'oauth/request_proxy/typhoeus_request'
 class AlertInUa2Twitter
   class Tweeter
     CREATE_TWEET_URL = "https://api.twitter.com/2/tweets"
+    attr_reader :consumer_key, :consumer_secret, :access_token
 
-    def initialize(key, secret)
-      consumer_key = ENV["CONSUMER_KEY"]
-      consumer_secret = ENV["CONSUMER_SECRET"]
+    def initialize(key, secret, access_token = nil, access_secret = nil)
+      @consumer_key = key
+      @consumer_secret = secret
+      if access_token && access_secret
+        @access_token = OAuth::AccessToken.new(consumer, access_token, access_secret)
+      end
+    end
+
+    def get_access_token
+      # PIN-based OAuth flow - Step 1
+      request_token = get_request_token
+      # PIN-based OAuth flow - Step 2
+      pin = get_user_authorization(request_token)
+      # PIN-based OAuth flow - Step 3
+      @access_token = obtain_access_token(consumer, request_token, pin)
+      puts "TWITTER_ACCESS_TOKEN=#{@access_token.token}"
+      puts "TWITTER_ACCESS_SECRET=#{@access_token.secret}"
+      @access_token
     end
 
     def payload(message)
@@ -23,7 +39,7 @@ class AlertInUa2Twitter
                                           :debug_output => false)
     end
 
-    def get_request_token(consumer)
+    def get_request_token
       consumer.get_request_token()
     end
 
@@ -42,7 +58,7 @@ class AlertInUa2Twitter
       request_token.get_access_token({:oauth_verifier => pin})
     end
 
-    def create_tweet(access_token, message)
+    def create_tweet(message)
       options = {
           :method => :post,
           headers: {
@@ -60,18 +76,3 @@ class AlertInUa2Twitter
     end
   end
 end
-
-
-
-# # PIN-based OAuth flow - Step 1
-# request_token = get_request_token(consumer)
-# # PIN-based OAuth flow - Step 2
-# pin = get_user_authorization(request_token)
-# # PIN-based OAuth flow - Step 3
-# access_token = obtain_access_token(consumer, request_token, pin)
-
-# oauth_params = {:consumer => consumer, :token => access_token}
-
-
-# response = create_tweet(create_tweet_url, oauth_params)
-# puts response.code, JSON.pretty_generate(JSON.parse(response.body))

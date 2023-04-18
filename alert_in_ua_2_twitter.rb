@@ -5,10 +5,10 @@ require './alert_in_ua_2_twitter/translation'
 require './alert_in_ua_2_twitter/tweeter'
 
 API_TOKEN = ENV['ALERTS_IN_UA_TOKEN']
-TWITTER_CONSUMER_KEY = 'your_consumer_key'
-TWITTER_CONSUMER_SECRET = 'your_consumer_secret'
-TWITTER_ACCESS_TOKEN = 'your_access_token'
-TWITTER_ACCESS_SECRET = 'your_access_secret'
+TWITTER_CONSUMER_KEY = ENV['TWITTER_CONSUMER_KEY']
+TWITTER_CONSUMER_SECRET = ENV['TWITTER_CONSUMER_SECRET']
+TWITTER_ACCESS_TOKEN = ENV['TWITTER_ACCESS_TOKEN']
+TWITTER_ACCESS_SECRET = ENV['TWITTER_ACCESS_SECRET']
 SNITCH_URL = ENV['SNITCH_URL']
 
 class AlertInUa2Twitter
@@ -41,8 +41,18 @@ private
     tweet_message(message)
   end
 
+  def tweeter
+    @tweeter ||= AlertInUa2Twitter::Tweeter.new(
+      TWITTER_CONSUMER_KEY,
+      TWITTER_CONSUMER_SECRET,
+      TWITTER_ACCESS_TOKEN,
+      TWITTER_ACCESS_SECRET
+    )
+  end
+
   def tweet_message(message)
-    puts "Tweeting #{message}"
+    tweeter.create_tweet(message)
+    puts "Tweeted #{message}"
   end
 end
 
