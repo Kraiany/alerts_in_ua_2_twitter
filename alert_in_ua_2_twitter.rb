@@ -18,7 +18,7 @@ class AlertInUa2Twitter
   def alert
     started_alerts, active_alerts, terminated_alerts = AlertInUa2Twitter::AlertRetriever.new.get
 
-    format_and_notify([started_alerts, active_alerts].flatten, :started) #if started_alerts.any?
+    format_and_notify([started_alerts, active_alerts].flatten, :started) if started_alerts.any?
     format_and_notify(terminated_alerts, :finished) if terminated_alerts.any?
   end
 
