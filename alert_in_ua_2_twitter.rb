@@ -11,8 +11,8 @@ TWITTER_ACCESS_SECRET = 'your_access_secret'
 SNITCH_URL = ENV['SNITCH_URL']
 
 class AlertInUa2Twitter
-  def initialize
-    MiniI18n.locale = :ja
+  def initialize(lang = :ja)
+    MiniI18n.locale = lang
   end
 
   def alert
