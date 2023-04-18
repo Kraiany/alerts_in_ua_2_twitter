@@ -36,6 +36,7 @@ GEM
       version_gem (~> 1.1)
     oauth-tty (1.0.5)
       version_gem (~> 1.1, >= 1.1.1)
+    pg (1.4.6)
     public_suffix (5.0.1)
     rake (13.0.6)
     sequel (5.67.0)
@@ -70,6 +71,7 @@ PLATFORMS
 DEPENDENCIES
   mini_i18n
   oauth
+  pg
   sequel
   sqlite3
   state_machines

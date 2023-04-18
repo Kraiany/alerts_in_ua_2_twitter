@@ -15,7 +15,9 @@ https://alerts.in.ua/
   * `TWITTER_CONSUMER_KEY= TWITTER_CONSUMER_SECRET= bin/generate_access_token`
   * Follow on-screen instructions
 * Save `TWITTER_ACCESS_TOKEN` and `TWITTER_ACCESS_SECRET` values
-* Database: sqlite or postgres. See `db.rb` for configuration
+* Database: sqlite or postgres. Set `DATABASE_URL` See `db.rb` for more
+  * Sqlite: `DATABASE_URL='sqlite://alerts.db'`
+  * Postgres: `DATABASE_URL='postgres://user:password@host:port/database_name'`
 
 ## Tweeting Updates
 

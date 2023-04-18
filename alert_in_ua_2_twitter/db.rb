@@ -1,6 +1,7 @@
 require 'sequel'
 
-DB = Sequel.sqlite('alerts.db')
+database_url = ENV['DATABASE_URL'] || 'sqlite://alerts.db'
+DB = Sequel.connect(database_url)
 DB.create_table?(:alerts) do
   primary_key :id
   String :location_title
