@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require './alert_in_ua_2_twitter'
+
+AlertInUa2Twitter.new.alert
