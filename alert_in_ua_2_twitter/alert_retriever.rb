@@ -24,7 +24,7 @@ class AlertInUa2Twitter
 
   class AlertRetriever
     def get
-      alerts = fetch_alerts
+      alerts = ENV['DEBUG'] ? fetch_mocked_alerts : fetch_alerts
       return if alerts.nil?
       started_alerts = []
       terminated_alerts = []
@@ -69,6 +69,11 @@ class AlertInUa2Twitter
       else
         raise "No alerts: #{response.body}"
       end
+    end
+
+    def fetch_mocked_alerts
+      file = File.read("./support/mock_response.json")
+      JSON.parse(file)["alerts"]
     end
   end
 end

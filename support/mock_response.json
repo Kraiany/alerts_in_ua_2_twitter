@@ -1,0 +1,48 @@
+{
+  "alerts": [
+    {
+      "id": 8757,
+      "location_title": "Луганська область",
+      "location_type": "oblast",
+      "started_at": "2022-04-04T16:45:39.000Z",
+      "finished_at": null,
+      "updated_at": "2022-04-08T08:04:26.316Z",
+      "alert_type": "air_raid",
+      "location_oblast": "Луганська область",
+      "location_uid": "16",
+      "notes": null,
+      "calculated": null
+    },
+    {
+      "id": 28288,
+      "location_title": "Автономна Республіка Крим",
+      "location_type": "oblast",
+      "started_at": "2022-12-10T22:22:00.000Z",
+      "finished_at": null,
+      "updated_at": "2022-12-12T12:20:11.900Z",
+      "alert_type": "air_raid",
+      "location_oblast": "Автономна Республіка Крим",
+      "location_uid": "29",
+      "notes": "Згідно інформації з Офіційних карт тривог",
+      "calculated": null
+    },
+    {
+      "id": 36217,
+      "location_title": "Донецька область",
+      "location_type": "oblast",
+      "started_at": "2023-04-02T08:32:53.000Z",
+      "finished_at": null,
+      "updated_at": "2023-04-02T08:32:55.603Z",
+      "alert_type": "air_raid",
+      "location_oblast": "Донецька область",
+      "location_uid": "28",
+      "notes": null,
+      "calculated": null
+    }
+  ],
+  "meta": {
+    "last_updated_at": "2023/04/02 08:32:55 +0000",
+    "type": "full"
+  },
+  "disclaimer": "If you use python try our official alerts_in_ua PiP package."
+}
