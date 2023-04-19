@@ -1,4 +1,6 @@
 require 'sequel'
+require 'sqlite3'
+require 'pg'
 
 database_url = ENV['DATABASE_URL'] || 'sqlite://alerts.db'
 DB = Sequel.connect(database_url)
