@@ -33,7 +33,7 @@ private
     end
 
     message = [
-      MiniI18n.t(:started),
+      MiniI18n.t(kind),
       m.sort.join(MiniI18n.t(:comma)),
       MiniI18n.t(:period)
     ].join
