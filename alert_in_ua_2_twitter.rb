@@ -51,8 +51,8 @@ private
   end
 
   def tweet_message(message)
+    puts "Tweeting: #{message}"
     tweeter.create_tweet(message)
-    puts "Tweeted #{message}"
   end
 end
 
