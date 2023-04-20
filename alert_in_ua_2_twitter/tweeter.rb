@@ -72,7 +72,9 @@ class AlertInUa2Twitter
         consumer: consumer, token: access_token, request_uri: CREATE_TWEET_URL
       })
       request.options[:headers].merge!({"Authorization" => oauth_helper.header}) # Signs the request
-      request.run
+      result = request.run
+      raise "Not successful (#{result.response_code}) #{result.body}" if result.response_code != 201
+      result
     end
   end
 end
