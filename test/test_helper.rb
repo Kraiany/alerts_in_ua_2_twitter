@@ -6,7 +6,7 @@ require_relative '../alert_in_ua_2_twitter'
 VCR.configure do |config|
   config.cassette_library_dir = 'support/fixtures/vcr_cassettes'
   config.hook_into :webmock
-  config.default_cassette_options = { record: :new_episodes }
+  config.default_cassette_options = { record: :none }
   %w[
     ALERTS_IN_UA_TOKEN
     TWITTER_CONSUMER_KEY
