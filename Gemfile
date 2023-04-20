@@ -9,3 +9,7 @@ gem 'state_machines'
 gem 'mini_i18n'
 gem 'oauth'
 gem 'typhoeus'
+
+gem 'minitest'
+gem 'vcr'
+gem 'webmock'

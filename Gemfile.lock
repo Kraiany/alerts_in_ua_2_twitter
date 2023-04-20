@@ -4,6 +4,8 @@ GEM
     addressable (2.8.2)
       public_suffix (>= 2.0.2, < 6.0)
     buftok (0.2.0)
+    crack (0.4.5)
+      rexml
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     equalizer (0.0.11)
@@ -13,6 +15,7 @@ GEM
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
+    hashdiff (1.0.1)
     hashie (5.0.0)
     http (4.4.1)
       addressable (~> 2.3)
@@ -28,6 +31,7 @@ GEM
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     mini_i18n (0.9.0)
+    minitest (5.18.0)
     multipart-post (2.3.0)
     naught (1.1.0)
     oauth (1.1.0)
@@ -39,6 +43,7 @@ GEM
     pg (1.4.6)
     public_suffix (5.0.1)
     rake (13.0.6)
+    rexml (3.2.5)
     sequel (5.67.0)
     simple_oauth (0.3.1)
     snaky_hash (2.0.1)
@@ -64,7 +69,12 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8.2)
+    vcr (6.1.0)
     version_gem (1.1.2)
+    webmock (3.18.1)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
 
 PLATFORMS
   x86_64-darwin-22
@@ -72,6 +82,7 @@ PLATFORMS
 
 DEPENDENCIES
   mini_i18n
+  minitest
   oauth
   pg
   sequel
@@ -79,6 +90,8 @@ DEPENDENCIES
   state_machines
   twitter
   typhoeus
+  vcr
+  webmock
 
 RUBY VERSION
    ruby 3.1.3p185
