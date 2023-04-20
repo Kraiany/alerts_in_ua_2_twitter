@@ -2,9 +2,12 @@ require 'sequel'
 require 'sqlite3'
 require 'pg'
 
-database_url = ENV['DATABASE_URL'] || 'sqlite://alerts.db'
-DB = Sequel.connect(database_url)
-DB.create_table?(:alerts) do
+if database_url = ENV['DATABASE_URL']
+  $db = Sequel.connect(database_url)
+else
+  $db = Sequel.sqlite
+end
+$db.create_table?(:alerts) do
   primary_key :id
   String :location_title
   String :location_type
