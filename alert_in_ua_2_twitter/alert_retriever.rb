@@ -51,8 +51,10 @@ class AlertInUa2Twitter
         terminated_alerts << alert
       end
 
-      started_alert_ids = started_alerts.map{ |alert| alert['id'] }
-      active_alerts = Alert.where(state: 'active').exclude(id: started_alert_ids).to_a
+      started_alert_ids = started_alerts.map(&:id)
+      terminated_alert_ids = terminated_alerts.map(&:id)
+      active_alerts = Alert.where(state: 'active')
+        .exclude(id: [started_alert_ids, terminated_alert_ids].flatten).to_a
 
       [started_alerts, active_alerts, terminated_alerts]
     end
