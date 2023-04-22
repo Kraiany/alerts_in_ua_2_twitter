@@ -1,4 +1,7 @@
 ja:
+  time:
+    formats:
+      short: "%-m月%-d日 %H:%M JST"
   started: "空襲警報が発令されました："
   finished: "空襲警報が解除されました："
   comma: "、"

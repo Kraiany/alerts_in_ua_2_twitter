@@ -27,6 +27,7 @@ private
 
   def format_and_notify(alerts, kind)
     m = []
+    now = Time.now.getlocal('+09:00')
 
     alerts.each do |a|
       m << (MiniI18n.t(a.location_title.sub('.', '')) || a.location_title)
@@ -35,7 +36,8 @@ private
     message = [
       MiniI18n.t(kind),
       m.sort.join(MiniI18n.t(:comma)),
-      MiniI18n.t(:period)
+      MiniI18n.t(:period),
+      MiniI18n.l(now, format: :short)
     ].join
 
     tweet_message(message)
