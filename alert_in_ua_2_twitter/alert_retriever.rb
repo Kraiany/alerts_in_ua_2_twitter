@@ -33,8 +33,17 @@ class AlertInUa2Twitter
         alert_id = remote_alert['id'].to_i
         alert = Alert[alert_id]
         if alert.nil?
-          alert = Alert.create(remote_alert)
-          started_alerts << alert
+          started_alerts << Alert.create(remote_alert.slice(*%w[id
+            alert_type
+            calculated
+            finished_at
+            location_oblast
+            location_title
+            location_type
+            location_uid
+            notes
+            started_at
+            updated_at]))
         elsif alert.state == 'active' && !remote_alert['finished_at'].nil?
           alert.update(finished_at: remote_alert['finished_at'], updated_at: remote_alert['updated_at'])
           alert.terminate
