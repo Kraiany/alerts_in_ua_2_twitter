@@ -3,7 +3,7 @@ require 'tempfile'
 require 'uri'
 
 class AlertInUa2Twitter::AlertImageRetriever
-  URL = "https://alerts-screenshot.vercel.app/api/capture?width=1600&height=900&delay=5000&url=https://alerts.in.ua/?minimal&disableInteractiveMap"
+  URL = "https://alerts-screenshot.vercel.app/api/capture?width=1600&height=900&delay=5000&url=https://alerts.in.ua/en?minimal&disableInteractiveMap"
   RETRY_COUNT = 2
 
   def get
