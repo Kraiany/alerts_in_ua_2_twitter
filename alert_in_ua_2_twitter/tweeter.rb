@@ -1,6 +1,7 @@
 require 'oauth'
 require 'json'
 require 'typhoeus'
+require 'twitter'
 require 'oauth/request_proxy/typhoeus_request'
 
 class AlertInUa2Twitter
@@ -28,8 +29,10 @@ class AlertInUa2Twitter
       @access_token
     end
 
-    def payload(message)
-      {"text": message}
+    def payload(message, media_id = nil)
+      pl = {"text": message}
+      pl.merge!({"media": {"media_ids": [media_id]}}) if media_id
+      pl
     end
 
     def consumer
@@ -58,14 +61,15 @@ class AlertInUa2Twitter
       request_token.get_access_token({:oauth_verifier => pin})
     end
 
-    def create_tweet(message)
+    def create_tweet(message, image_path = nil)
+      media_id = (image_path ? upload_photo_to_twitter(image_path) : nil)
       options = {
           :method => :post,
           headers: {
             "User-Agent": "AlertInUa2Twitter #{VERSION}",
             "content-type": "application/json"
           },
-          body: JSON.dump(payload(message))
+          body: JSON.dump(payload(message, media_id))
       }
       request = Typhoeus::Request.new(CREATE_TWEET_URL, options)
       oauth_helper = OAuth::Client::Helper.new(request, {
@@ -75,6 +79,24 @@ class AlertInUa2Twitter
       result = request.run
       raise "Not successful (#{result.response_code}) #{result.body}" if result.response_code != 201
       result
+    end
+
+    def upload_photo_to_twitter(file_path)
+      client = Twitter::REST::Client.new do |config|
+        config.consumer_key        = @consumer_key
+        config.consumer_secret     = @consumer_secret
+        config.access_token        = @access_token.token
+        config.access_token_secret = @access_token.secret
+      end
+
+      begin
+        media = client.send(:upload, File.new(file_path))
+        puts "Image uploaded to Twitter: #{media.inspect}"
+        return media.fetch(:media_id_string, nil)
+      rescue Exception => e
+        puts "An error occurred while uploading the photo to Twitter: #{e.message}"
+        return nil
+      end
     end
   end
 end

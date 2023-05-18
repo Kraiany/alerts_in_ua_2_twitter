@@ -21,13 +21,13 @@ class AlertInUa2Twitter
     started_alerts, active_alerts, terminated_alerts = AlertInUa2Twitter::AlertRetriever.new.get
     image_path = AlertInUa2Twitter::AlertImageRetriever.new.get if started_alerts.any? || terminated_alerts.any?
 
-    format_and_notify(started_alerts, :started) if started_alerts.any?
-    format_and_notify(terminated_alerts, :finished) if terminated_alerts.any?
+    format_and_notify(started_alerts, :started, image_path) if started_alerts.any?
+    format_and_notify(terminated_alerts, :finished, image_path) if terminated_alerts.any?
   end
 
 private
 
-  def format_and_notify(alerts, kind)
+  def format_and_notify(alerts, kind, image = nil)
     m = []
     now = Time.now.getlocal('+09:00')
 
@@ -42,7 +42,7 @@ private
       MiniI18n.l(now, format: :short)
     ].join
 
-    tweet_message(message)
+    tweet_message(message, image)
   end
 
   def tweeter
@@ -54,9 +54,9 @@ private
     )
   end
 
-  def tweet_message(message)
+  def tweet_message(message, image_path = nil)
     puts "Tweeting: #{message}"
-    tweeter.create_tweet(message)
+    tweeter.create_tweet(message, image_path)
   end
 end
 
