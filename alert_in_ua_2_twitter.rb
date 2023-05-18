@@ -1,6 +1,7 @@
 require './alert_in_ua_2_twitter/version'
 require './alert_in_ua_2_twitter/db'
 require './alert_in_ua_2_twitter/alert_retriever'
+require './alert_in_ua_2_twitter/alert_image_retriever'
 require './alert_in_ua_2_twitter/translation'
 require './alert_in_ua_2_twitter/tweeter'
 
@@ -18,6 +19,7 @@ class AlertInUa2Twitter
 
   def alert
     started_alerts, active_alerts, terminated_alerts = AlertInUa2Twitter::AlertRetriever.new.get
+    image_path = AlertInUa2Twitter::AlertImageRetriever.new.get if started_alerts.any? || terminated_alerts.any?
 
     format_and_notify(started_alerts, :started) if started_alerts.any?
     format_and_notify(terminated_alerts, :finished) if terminated_alerts.any?
