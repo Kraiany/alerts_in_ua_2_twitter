@@ -22,7 +22,7 @@ class AlertInUa2Twitter
     image_path = AlertInUa2Twitter::AlertImageRetriever.new.get if started_alerts.any? || terminated_alerts.any?
 
     format_and_notify(started_alerts, :started, image_path) if started_alerts.any?
-    format_and_notify(terminated_alerts, :finished, image_path) if terminated_alerts.any?
+    format_and_notify(terminated_alerts, :finished) if terminated_alerts.any?
   end
 
 private
