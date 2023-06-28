@@ -69,7 +69,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8.2)
-    vcr (6.1.0)
+    vcr (6.2.0)
     version_gem (1.1.2)
     webmock (3.18.1)
       addressable (>= 2.8.0)
