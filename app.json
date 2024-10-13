@@ -1,0 +1,52 @@
+{
+  "name": "alert-in-ua-twitter",
+  "description": "A Ruby application that retrieves alerts from alerts.in.ua and posts them to Twitter",
+  "repository": "https://github.com/kraiany/alerts_in_ua_2_twitter",
+  "keywords": [
+    "ruby",
+    "twitter",
+    "alerts"
+  ],
+  "image": "ghcr.io/kraiany/kraiany/alerts_in_ua_2_twitter:master",
+  "cron": [
+    {
+      "command": "bundle exec ruby bin/alert_twitter",
+      "schedule": "* * * * *"
+    }
+  ],
+  "env": {
+    "ALERTS_IN_UA_TOKEN": {
+      "description": "API token for alerts.in.ua",
+      "required": true
+    },
+    "TWITTER_CONSUMER_KEY": {
+      "description": "Twitter API consumer key",
+      "required": true
+    },
+    "TWITTER_CONSUMER_SECRET": {
+      "description": "Twitter API consumer secret",
+      "required": true
+    },
+    "TWITTER_ACCESS_TOKEN": {
+      "description": "Twitter API access token",
+      "required": true
+    },
+    "TWITTER_ACCESS_SECRET": {
+      "description": "Twitter API access secret",
+      "required": true
+    },
+    "DATABASE_URL": {
+      "description": "URL for the database connection",
+      "required": true
+    },
+    "SNITCH_URL": {
+      "description": "URL for monitoring service (optional)",
+      "required": false
+    }
+  },
+  "scripts": {
+    "dokku": {
+      "predeploy": "echo 'Using pre-built Docker image'"
+    }
+  }
+}
