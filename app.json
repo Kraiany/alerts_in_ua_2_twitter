@@ -46,7 +46,6 @@
   },
   "scripts": {
     "dokku": {
-      "predeploy": "echo 'Using pre-built Docker image'"
     }
   }
 }
