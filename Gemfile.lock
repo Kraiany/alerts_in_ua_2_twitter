@@ -3,7 +3,7 @@ GEM
   specs:
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
-    bigdecimal (3.1.5)
+    bigdecimal (3.1.8)
     buftok (0.3.0)
     crack (0.4.5)
       rexml
@@ -45,7 +45,7 @@ GEM
     public_suffix (5.0.3)
     rake (13.0.6)
     rexml (3.2.6)
-    sequel (5.76.0)
+    sequel (5.85.0)
       bigdecimal
     simple_oauth (0.3.1)
     snaky_hash (2.0.1)
