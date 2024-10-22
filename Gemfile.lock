@@ -1,12 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.8.5)
-      public_suffix (>= 2.0.2, < 6.0)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
     base64 (0.2.0)
     bigdecimal (3.1.5)
     buftok (0.3.0)
-    crack (0.4.5)
+    crack (1.0.0)
+      bigdecimal
       rexml
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -17,7 +18,7 @@ GEM
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
-    hashdiff (1.0.1)
+    hashdiff (1.1.1)
     hashie (5.0.0)
     http (5.1.1)
       addressable (~> 2.8)
@@ -43,9 +44,9 @@ GEM
     oauth-tty (1.0.5)
       version_gem (~> 1.1, >= 1.1.1)
     pg (1.5.8)
-    public_suffix (5.0.3)
+    public_suffix (6.0.1)
     rake (13.0.6)
-    rexml (3.2.6)
+    rexml (3.3.8)
     sequel (5.76.0)
       bigdecimal
     simple_oauth (0.3.1)
@@ -75,7 +76,7 @@ GEM
     vcr (6.3.1)
       base64
     version_gem (1.1.2)
-    webmock (3.19.1)
+    webmock (3.24.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
