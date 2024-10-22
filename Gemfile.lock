@@ -3,6 +3,7 @@ GEM
   specs:
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
+    base64 (0.2.0)
     bigdecimal (3.1.5)
     buftok (0.3.0)
     crack (0.4.5)
@@ -71,7 +72,8 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8.2)
-    vcr (6.2.0)
+    vcr (6.3.1)
+      base64
     version_gem (1.1.2)
     webmock (3.19.1)
       addressable (>= 2.8.0)
